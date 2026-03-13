@@ -660,6 +660,12 @@ const IDB = (() => {
     position:absolute; inset:0; border-radius:20px; display:flex; flex-direction:column;
     align-items:center; justify-content:center; backface-visibility:hidden; padding:28px; text-align:center; min-height:240px;
   }
+  /* Sizer invisible div để card tự giãn theo nội dung */
+  .fc-sizer {
+    visibility:hidden; pointer-events:none;
+    display:flex; flex-direction:column; align-items:center;
+    padding:28px; min-height:240px; width:100%;
+  }
   .fc-front {
     background:linear-gradient(135deg, rgba(0,245,255,0.08), rgba(191,0,255,0.08));
     border:1px solid rgba(0,245,255,0.25); box-shadow:0 0 40px rgba(0,245,255,0.08);
@@ -685,7 +691,21 @@ const IDB = (() => {
   .fc-type { font-size:0.75rem; color:rgba(255,255,255,0.4); margin-bottom:8px; font-style:italic; font-family:'Inter',sans-serif; }
   .fc-level { font-size:0.62rem; padding:3px 10px; border-radius:20px; background:rgba(191,0,255,0.15); border:1px solid rgba(191,0,255,0.3); color:var(--neon-purple); letter-spacing:0.12em; margin-bottom:8px; text-transform:uppercase; font-family:'Inter',sans-serif; }
   .fc-desc  { font-size:0.82rem; color:rgba(255,255,255,0.58); max-width:400px; margin-bottom:7px; line-height:1.6; font-family:'Inter',sans-serif; }
-  .fc-example { font-size:0.82rem; color:rgba(255,255,255,0.38); font-style:italic; max-width:420px; line-height:1.6; font-family:'Inter',sans-serif; }
+  .fc-example {
+    font-size:0.82rem; color:rgba(255,255,255,0.38); font-style:italic; max-width:420px;
+    line-height:1.6; font-family:'Inter',sans-serif;
+    /* Truncate mặc định */
+    display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;
+    cursor:pointer; transition:all 0.2s;
+  }
+  .fc-example.expanded {
+    display:block; overflow:visible; -webkit-line-clamp:unset;
+  }
+  .fc-example-toggle {
+    font-size:0.68rem; color:rgba(0,245,255,0.45); font-style:normal; font-family:'Space Mono',monospace;
+    cursor:pointer; margin-top:2px; letter-spacing:0.05em; display:inline-block;
+  }
+  .fc-example-toggle:hover { color:var(--neon-cyan); }
 
 
   .feedback-correct { color:var(--neon-green); text-shadow:0 0 8px rgba(57,255,20,0.5); }
@@ -2653,7 +2673,10 @@ function renderFlashcard() {
               <a class="fc-cambridge-link" href="https://dictionary.cambridge.org/dictionary/english/${encodeURIComponent(c.word)}" target="_blank" onclick="event.stopPropagation()">📖 Cambridge</a>
             </div>
           `}
-          ${c.example?`<div class="fc-example" style="margin-top:6px" onclick="event.stopPropagation()">🗣 ${h(c.example)}</div>`:''}
+          ${c.example ? `
+            <div class="fc-example" id="fcExFront" style="margin-top:6px" onclick="toggleFcExample('fcExFront','fcExTogFront');event.stopPropagation()">🗣 ${h(c.example)}</div>
+            <span class="fc-example-toggle" id="fcExTogFront" onclick="toggleFcExample('fcExFront','fcExTogFront');event.stopPropagation()">▼ xem đầy đủ</span>
+          ` : ''}
         </div>
         <div class="fc-face fc-back">
           <div class="fc-hint">${reversedMode ? 'Tiếng Anh' : 'Nghĩa tiếng Việt'}</div>
@@ -2676,11 +2699,22 @@ function renderFlashcard() {
               <button class="fc-speak-btn fc-speak-uk" id="btnUK2" onclick="speakWord('${c.word.replace(/'/g,"\\'")}','en-GB','btnUK2')">🔊 UK</button>
             </div>
           `}
-          ${reversedMode
-            ? (c.example    ? `<div class="fc-example" style="margin-top:6px" onclick="event.stopPropagation()">🗣 ${h(c.example)}</div>` : '')
-            : (c.example_vi ? `<div class="fc-example" style="margin-top:6px" onclick="event.stopPropagation()">🗣 ${h(c.example_vi)}</div>`
-               : c.example  ? `<div class="fc-example" style="margin-top:6px" onclick="event.stopPropagation()">🗣 ${h(c.example)}</div>` : '')
-          }
+          ${(() => {
+            const ex = reversedMode ? c.example : (c.example_vi || c.example);
+            return ex ? `
+              <div class="fc-example" id="fcExBack" style="margin-top:6px" onclick="toggleFcExample('fcExBack','fcExTogBack');event.stopPropagation()">🗣 ${h(ex)}</div>
+              <span class="fc-example-toggle" id="fcExTogBack" onclick="toggleFcExample('fcExBack','fcExTogBack');event.stopPropagation()">▼ xem đầy đủ</span>
+            ` : '';
+          })()}
+        </div>
+        <!-- Sizer: đẩy chiều cao card theo mặt đang hiển thị -->
+        <div class="fc-sizer" id="fcSizer" aria-hidden="true">
+          <div class="fc-hint" style="opacity:0">hint</div>
+          ${reversedMode ? `<div class="fc-word">${h(c.meaning)}</div>` : `<div class="fc-word">${h(c.word)}</div>`}
+          ${c.phonetics?`<div class="fc-phonetic" style="opacity:0">ph</div>`:''}
+          ${c.level?`<div class="fc-level" style="opacity:0">lv</div>`:''}
+          <div class="fc-speak-row" style="opacity:0"><button class="fc-speak-btn fc-speak-us">🔊 US</button></div>
+          ${c.example ? `<div class="fc-example" style="opacity:0;display:block">🗣 ${h(c.example)}</div>` : ''}
         </div>
       </div>
     </div>
@@ -2698,6 +2732,34 @@ function renderFlashcard() {
 
   isFlipped=false;
   autoSpeakCurrent();
+  // Ẩn nút "xem đầy đủ" nếu example vừa đủ 1 dòng
+  requestAnimationFrame(() => {
+    ['fcExFront','fcExBack'].forEach(id => {
+      const ex = document.getElementById(id);
+      const tog = document.getElementById(id.replace('fcEx','fcExTog'));
+      if (!ex || !tog) return;
+      // scrollHeight > clientHeight nghĩa là text bị cắt
+      tog.style.display = ex.scrollHeight > ex.clientHeight + 2 ? '' : 'none';
+    });
+  });
+}
+
+// Toggle example expand/collapse trên flashcard
+function toggleFcExample(exId, togId) {
+  const ex = document.getElementById(exId);
+  const tog = document.getElementById(togId);
+  if (!ex) return;
+  const expanded = ex.classList.toggle('expanded');
+  if (tog) tog.textContent = expanded ? '▲ thu gọn' : '▼ xem đầy đủ';
+  // Cập nhật sizer để card giãn chiều cao
+  const sizer = document.getElementById('fcSizer');
+  if (sizer) {
+    const sizerEx = sizer.querySelector('.fc-example');
+    if (sizerEx) {
+      sizerEx.style.display = expanded ? 'block' : '';
+      sizerEx.style['-webkit-line-clamp'] = expanded ? 'unset' : '';
+    }
+  }
 }
 
 function flipCard() {
@@ -2705,7 +2767,6 @@ function flipCard() {
   const wasFlipped = isFlipped;
   isFlipped=!isFlipped;
   c.classList.toggle('flipped',isFlipped);
-  // Only count as "seen" when flipping to reveal the back for the first time per card
   if (!wasFlipped) { statsRecordFlip(); }
 }
 
