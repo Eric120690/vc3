@@ -871,8 +871,7 @@ const IDB = (() => {
     }
     .pack-progress-bar { margin-bottom: 0; }
     .pack-progress-label { display: none; }
-    /* Ẩn pin toggle + sort wrap + publish btn trong card mobile */
-    .pin-toggle-wrap,
+    /* Ẩn sort wrap + publish btn trong card mobile */
     .pack-sort-wrap,
     .btn-publish { display: none !important; }
     /* Actions chỉ hiện khi long-press (tap) qua CSS active */
@@ -1571,15 +1570,6 @@ const IDB = (() => {
       <div class="mob-sheet-title" id="mobSheetTitle">Tuỳ chọn</div>
       <div class="mob-sheet-body">
         <div class="mob-sheet-row">
-          <span class="mob-sheet-label">Ghim lên đầu</span>
-          <div class="pin-toggle-wrap" id="mobSheetPinWrap" onclick="event.stopPropagation()">
-            <label class="pin-toggle">
-              <input type="checkbox" id="mobSheetPinCheck" onchange="mobSheetTogglePin()">
-              <span class="pin-toggle-track"></span>
-            </label>
-          </div>
-        </div>
-        <div class="mob-sheet-row">
           <span class="mob-sheet-label">Số thứ tự (STT)</span>
           <div class="mob-sheet-sort-row">
             <input class="mob-sheet-sort-input" type="number" min="1" max="9999" id="mobSheetSortInput" placeholder="—">
@@ -2032,12 +2022,6 @@ async function renderPacksGrid() {
 
     loadAdminPacks().then(async adminPacks => {
       if (!adminPacks.length) return;
-      const label = document.createElement('div');
-      label.className = 'shared-section-label';
-      label.style.cssText = 'grid-column:1/-1';
-      label.innerHTML = '⬡ Giáo trình';
-      grid.insertBefore(label, grid.firstChild);
-
       for (let i = 0; i < adminPacks.length; i++) {
         const pack = adminPacks[i];
         let idbData = null;
@@ -2066,16 +2050,15 @@ async function renderPacksGrid() {
           <div class="pack-name">${h(pack.name)}</div>
           <div class="pack-meta">${pack.desc ? h(pack.desc) + '<br>' : ''}${total} từ · ${mastered} đã thuộc</div>
           <div class="pack-progress-bar"><div class="pack-progress-fill" style="width:${pct}%"></div></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px" onclick="event.stopPropagation()">
             <div class="pack-progress-label" style="margin-top:0">${pct}% hoàn thành</div>
-            <div class="pack-admin-badge">⬡ giáo trình</div>
-          </div>
-          <div class="pin-toggle-wrap${isPinned ? ' active' : ''}" onclick="event.stopPropagation()">
-            <label class="pin-toggle">
-              <input type="checkbox" ${isPinned ? 'checked' : ''} onchange="toggleAdminPackPin('${pack.id}',this)">
-              <span class="pin-toggle-track"></span>
-            </label>
-            <span class="pin-toggle-label">Ghim lên đầu</span>
+            <div class="pin-toggle-wrap${isPinned ? ' active' : ''}" style="margin:0;padding:0;border:none">
+              <label class="pin-toggle">
+                <input type="checkbox" ${isPinned ? 'checked' : ''} onchange="toggleAdminPackPin('${pack.id}',this)">
+                <span class="pin-toggle-track"></span>
+              </label>
+              <span class="pin-toggle-label">Ghim</span>
+            </div>
           </div>
         `;
         card.addEventListener('click', (e) => {
@@ -2087,14 +2070,6 @@ async function renderPacksGrid() {
     }).catch(() => {});
 
     // Pack riêng của user
-    if (packs.length) {
-      const myLabel = document.createElement('div');
-      myLabel.className = 'shared-section-label';
-      myLabel.style.cssText = 'grid-column:1/-1;margin-top:8px';
-      myLabel.innerHTML = '◈ Gói của tôi';
-      grid.appendChild(myLabel);
-    }
-
     const addCard = document.createElement('div');
     addCard.className = 'pack-add-card';
     addCard.innerHTML = '<div class="pack-add-icon">⊕</div><div class="pack-add-label">TẠO GÓI MỚI</div>';
@@ -2119,13 +2094,15 @@ async function renderPacksGrid() {
         <div class="pack-name">${h(pack.name)}</div>
         <div class="pack-meta">${pack.desc ? h(pack.desc) + '<br>' : ''}${total} từ · ${mastered} đã thuộc</div>
         <div class="pack-progress-bar"><div class="pack-progress-fill" style="width:${pct}%"></div></div>
-        <div class="pack-progress-label">${pct}% hoàn thành</div>
-        <div class="pin-toggle-wrap${isPinned ? ' active' : ''}" onclick="event.stopPropagation()">
-          <label class="pin-toggle">
-            <input type="checkbox" ${isPinned ? 'checked' : ''} onchange="togglePin('${pack.id}',this)">
-            <span class="pin-toggle-track"></span>
-          </label>
-          <span class="pin-toggle-label">Ghim lên đầu</span>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px" onclick="event.stopPropagation()">
+          <div class="pack-progress-label">${pct}% hoàn thành</div>
+          <div class="pin-toggle-wrap${isPinned ? ' active' : ''}" style="margin:0;padding:0;border:none">
+            <label class="pin-toggle">
+              <input type="checkbox" ${isPinned ? 'checked' : ''} onchange="togglePin('${pack.id}',this)">
+              <span class="pin-toggle-track"></span>
+            </label>
+            <span class="pin-toggle-label">Ghim</span>
+          </div>
         </div>
       `;
       card.addEventListener('click', (e) => {
