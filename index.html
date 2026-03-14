@@ -2819,6 +2819,15 @@ function renderFlashcard() {
     return;
   }
   const c = studyQueue[currentIndex];
+  // Merge art_* từ words gốc vào c (phòng khi IDB cache cũ chưa có field này)
+  const _wSrc = words.find(w => w.word === c.word);
+  if (_wSrc) {
+    c.art_source   = c.art_source   || _wSrc.art_source   || '';
+    c.art_url      = c.art_url      || _wSrc.art_url      || '';
+    c.art_ctx_vi   = c.art_ctx_vi   || _wSrc.art_ctx_vi   || '';
+    c.art_quote    = c.art_quote    || _wSrc.art_quote     || '';
+    c.art_quote_vi = c.art_quote_vi || _wSrc.art_quote_vi || '';
+  }
   const m = words.filter(w=>w.mastered && !w.hidden).length;
   const total = words.filter(w=>!w.hidden).length;
   const prog = total ? Math.round((m/total)*100) : 0;
