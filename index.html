@@ -2404,15 +2404,15 @@ function openArtDrawer(word) {
         <span class="art-item-date"></span>
       </div>
       <div class="art-item-body">
-        ${a.quote ? `
-          <div class="art-section">
-            <div class="art-section-label">Trích dẫn gốc</div>
-            <div class="art-quote">${highlightArtWord(h(a.quote), word.word)}</div>
-          </div>` : ''}
         ${a.ctx_vi ? `
           <div class="art-section">
             <div class="art-section-label">Ngữ cảnh (tiếng Việt)</div>
             <div class="art-ctx">${h(a.ctx_vi)}</div>
+          </div>` : ''}
+        ${a.quote ? `
+          <div class="art-section">
+            <div class="art-section-label">Trích dẫn gốc</div>
+            <div class="art-quote">${highlightArtWord(h(a.quote), word.word)}</div>
           </div>` : ''}
         ${a.quote_vi ? `
           <div class="art-section">
