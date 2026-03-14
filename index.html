@@ -665,7 +665,7 @@ const IDB = (() => {
   .fc-sizer {
     visibility:hidden; pointer-events:none;
     display:flex; flex-direction:column; align-items:center;
-    padding:22px 28px; min-height:240px; width:100%;
+    padding:28px; min-height:240px; width:100%;
   }
   .fc-front {
     background:linear-gradient(135deg, rgba(0,245,255,0.08), rgba(191,0,255,0.08));
@@ -676,14 +676,14 @@ const IDB = (() => {
     border:1px solid rgba(255,0,110,0.25); box-shadow:0 0 40px rgba(255,0,110,0.08);
     transform:rotateY(180deg);
   }
-  .fc-hint { font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; margin-bottom:10px; opacity:0.33; font-family:'Inter',sans-serif; flex-shrink:0; }
+  .fc-hint { font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; margin-bottom:14px; opacity:0.33; font-family:'Inter',sans-serif; }
   .fc-word {
     font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; letter-spacing:0.01em; line-height:1.2; margin-bottom:6px;
-    /* Scale xuống tự động khi text dài */
-    font-size:clamp(1.4rem, 5vw, 2.6rem);
+    font-size:clamp(1.3rem, 5vw, 2.6rem);
     max-width:100%;
-    /* Giới hạn 3 dòng */
-    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+    word-break:break-word;
+    max-height:calc(1.2em * 3);
+    overflow:hidden;
   }
   .fc-front .fc-word {
     background:linear-gradient(135deg,#fff, rgba(0,245,255,0.8));
@@ -2893,7 +2893,7 @@ function renderFlashcard() {
           <div class="fc-hint">${reversedMode ? 'Tiếng Việt – Nhấp để xem tiếng Anh ↕' : 'Nhấp để xem nghĩa ↕'}</div>
           ${reversedMode ? `
             <div class="fc-word">${h(c.meaning)}</div>
-            
+            ${c.description?`<div class="fc-desc">${h(c.description)}</div>`:''}
           ` : `
             <div class="fc-word">${h(c.word)}</div>
             ${c.phonetics?`<div class="fc-phonetic">/${h(c.phonetics)}/</div>`:''}
@@ -2924,7 +2924,7 @@ function renderFlashcard() {
             </div>
           ` : `
             <div class="fc-word">${h(c.meaning)}</div>
-            
+            ${c.description?`<div class="fc-desc">${h(c.description)}</div>`:''}
             <div style="margin-top:8px;font-size:0.8rem;color:rgba(255,255,255,0.38)">${h(c.word)}${c.phonetics?` &nbsp;<span style="color:var(--neon-cyan)">/${h(c.phonetics)}/</span>`:''}</div>
             <div class="fc-speak-row" onclick="event.stopPropagation()">
               <button class="fc-speak-btn fc-speak-us" id="btnUS2" onclick="speakWord('${c.word.replace(/'/g,"\\'")}','en-US','btnUS2')">🔊 US</button>
