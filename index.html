@@ -2893,7 +2893,6 @@ function renderFlashcard() {
           <div class="fc-hint">${reversedMode ? 'Tiếng Việt – Nhấp để xem tiếng Anh ↕' : 'Nhấp để xem nghĩa ↕'}</div>
           ${reversedMode ? `
             <div class="fc-word">${h(c.meaning)}</div>
-            ${c.description?`<div class="fc-desc">${h(c.description)}</div>`:''}
           ` : `
             <div class="fc-word">${h(c.word)}</div>
             ${c.phonetics?`<div class="fc-phonetic">/${h(c.phonetics)}/</div>`:''}
@@ -2924,7 +2923,6 @@ function renderFlashcard() {
             </div>
           ` : `
             <div class="fc-word">${h(c.meaning)}</div>
-            ${c.description?`<div class="fc-desc">${h(c.description)}</div>`:''}
             <div style="margin-top:8px;font-size:0.8rem;color:rgba(255,255,255,0.38)">${h(c.word)}${c.phonetics?` &nbsp;<span style="color:var(--neon-cyan)">/${h(c.phonetics)}/</span>`:''}</div>
             <div class="fc-speak-row" onclick="event.stopPropagation()">
               <button class="fc-speak-btn fc-speak-us" id="btnUS2" onclick="speakWord('${c.word.replace(/'/g,"\\'")}','en-US','btnUS2')">🔊 US</button>
