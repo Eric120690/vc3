@@ -2379,9 +2379,23 @@ function parseArticles(word) {
 
 function openArtDrawer(word) {
   const articles = parseArticles(word);
-  if (!articles.length) return;
   document.getElementById('artDrawerWord').textContent = word.word;
   const body = document.getElementById('artDrawerBody');
+  if (!articles.length) {
+    body.innerHTML = `
+      <div style="padding:36px 24px;text-align:center">
+        <div style="font-size:2.2rem;margin-bottom:12px">📰</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.35);line-height:1.8">
+          Từ này chưa có ngữ cảnh báo chí.<br>
+          <span style="font-size:0.72rem;color:rgba(255,255,255,0.2)">
+            Thêm vào Excel các cột:<br>
+            <code style="color:var(--neon-cyan);font-size:0.68rem">Nguồn báo · Trích dẫn gốc · Ngữ cảnh VI · Dịch câu</code>
+          </span>
+        </div>
+      </div>`;
+    document.getElementById('artDrawerOverlay').classList.add('open');
+    return;
+  }
   body.innerHTML = articles.map((a, i) => `
     <div class="art-item" id="artItem${i}">
       <div class="art-item-head" onclick="toggleArtItem(${i})">
@@ -2557,17 +2571,17 @@ function processExcelFile(file) {
         word:        ['word'],
         meaning:     ['nghĩa tiếng việt','meaning','nghia tieng viet','nghĩa','ngha tieng vit'],
         phonetics:   ['phonetics','phonetic','phiên âm','phien am'],
-        description: ['description','descrition','mô tả','mo ta','desc'],
+        description: ['description','descrition','mô tả','mo ta','desc','note'],
         example:     ['example','ví dụ','vi du'],
         example_vi:  ['example vi','ví dụ vi','vi du vi','example_vi','ví dụ tiếng việt','vi du tieng viet'],
         type:        ['type','loại từ','loai tu'],
         level:       ['level','cấp độ','cap do'],
         // Bài báo — nhiều bài dùng dấu | phân cách
-        art_source:  ['article_source','bai bao','bài báo','source'],
+        art_source:  ['article_source','bai bao','bài báo','source','nguồn báo','nguon bao'],
         art_url:     ['article_url','url','link'],
-        art_ctx_vi:  ['article_context_vi','ngu canh vi','ngữ cảnh vi','context_vi'],
-        art_quote:   ['article_quote','trich dan','trích dẫn','quote'],
-        art_quote_vi:['article_quote_vi','dich cau','dịch câu','quote_vi'],
+        art_ctx_vi:  ['article_context_vi','ngu canh vi','ngữ cảnh vi','context_vi','ngữ cảnh vi'],
+        art_quote:   ['article_quote','trich dan','trích dẫn','quote','trích dẫn gốc'],
+        art_quote_vi:['article_quote_vi','dich cau','dịch câu','quote_vi','dịch câu'],
       };
 
       function getCol(row, aliases) {
@@ -2885,8 +2899,8 @@ function renderFlashcard() {
           `}
           ${c.example ? `
             <div class="fc-example" id="fcExFront" style="margin-top:6px" onclick="event.stopPropagation()">🗣 ${h(c.example)}</div>
-            ${parseArticles(c).length ? `<span class="fc-example-toggle" onclick="openArtDrawer(studyQueue[currentIndex]);event.stopPropagation()">📰 xem ngữ cảnh báo chí →</span>` : ''}
           ` : ''}
+          <span class="fc-example-toggle" onclick="openArtDrawer(studyQueue[currentIndex]);event.stopPropagation()">📰 xem ngữ cảnh báo chí →</span>
         </div>
         <div class="fc-face fc-back">
           <div class="fc-hint">${reversedMode ? 'Tiếng Anh' : 'Nghĩa tiếng Việt'}</div>
@@ -2911,10 +2925,10 @@ function renderFlashcard() {
           `}
           ${(() => {
             const ex = reversedMode ? c.example : (c.example_vi || c.example);
-            return ex ? `
-              <div class="fc-example" id="fcExBack" style="margin-top:6px" onclick="event.stopPropagation()">🗣 ${h(ex)}</div>
-              ${parseArticles(c).length ? `<span class="fc-example-toggle" onclick="openArtDrawer(studyQueue[currentIndex]);event.stopPropagation()">📰 xem ngữ cảnh báo chí →</span>` : ''}
-            ` : '';
+            return `
+              ${ex ? `<div class="fc-example" id="fcExBack" style="margin-top:6px" onclick="event.stopPropagation()">🗣 ${h(ex)}</div>` : ''}
+              <span class="fc-example-toggle" onclick="openArtDrawer(studyQueue[currentIndex]);event.stopPropagation()">📰 xem ngữ cảnh báo chí →</span>
+            `;
           })()}
         </div>
         <!-- Sizer: đẩy chiều cao card theo mặt đang hiển thị -->
