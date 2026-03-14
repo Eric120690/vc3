@@ -1950,6 +1950,11 @@ async function saveData() {
     level: w.level || '',
     mastered: !!w.mastered,
     hidden: !!w.hidden,
+    art_source:   w.art_source   || '',
+    art_url:      w.art_url      || '',
+    art_ctx_vi:   w.art_ctx_vi   || '',
+    art_quote:    w.art_quote    || '',
+    art_quote_vi: w.art_quote_vi || '',
   }));
 
   await IDB.set(currentPack.id, { words: wordsToSave, updatedAt: now }).catch(() => {});
@@ -2404,7 +2409,6 @@ function openArtDrawer(word) {
       </div>
     </div>
   `).join('');
-  // Tự mở bài đầu tiên
   toggleArtItem(0);
   document.getElementById('artDrawerOverlay').classList.add('open');
 }
