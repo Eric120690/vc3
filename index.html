@@ -658,14 +658,7 @@ const IDB = (() => {
   .flashcard.flipped { transform:rotateY(180deg); }
   .fc-face {
     position:absolute; inset:0; border-radius:20px; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; backface-visibility:hidden; padding:22px 28px; text-align:center; min-height:240px;
-    overflow:hidden;
-  }
-  /* Sizer invisible div để card tự giãn theo nội dung */
-  .fc-sizer {
-    visibility:hidden; pointer-events:none;
-    display:flex; flex-direction:column; align-items:center;
-    padding:28px; min-height:240px; width:100%;
+    align-items:center; justify-content:center; backface-visibility:hidden; padding:28px; text-align:center; min-height:240px;
   }
   .fc-front {
     background:linear-gradient(135deg, rgba(0,245,255,0.08), rgba(191,0,255,0.08));
@@ -677,14 +670,7 @@ const IDB = (() => {
     transform:rotateY(180deg);
   }
   .fc-hint { font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; margin-bottom:14px; opacity:0.33; font-family:'Inter',sans-serif; }
-  .fc-word {
-    font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; letter-spacing:0.01em; line-height:1.2; margin-bottom:6px;
-    font-size:clamp(1.3rem, 5vw, 2.6rem);
-    max-width:100%;
-    word-break:break-word;
-    max-height:calc(1.2em * 3);
-    overflow:hidden;
-  }
+  .fc-word { font-family:'Plus Jakarta Sans',sans-serif; font-size:2.6rem; font-weight:800; letter-spacing:0.01em; line-height:1.15; margin-bottom:6px; }
   .fc-front .fc-word {
     background:linear-gradient(135deg,#fff, rgba(0,245,255,0.8));
     -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
@@ -699,15 +685,7 @@ const IDB = (() => {
   .fc-type { font-size:0.75rem; color:rgba(255,255,255,0.4); margin-bottom:8px; font-style:italic; font-family:'Inter',sans-serif; }
   .fc-level { font-size:0.62rem; padding:3px 10px; border-radius:20px; background:rgba(191,0,255,0.15); border:1px solid rgba(191,0,255,0.3); color:var(--neon-purple); letter-spacing:0.12em; margin-bottom:8px; text-transform:uppercase; font-family:'Inter',sans-serif; }
   .fc-desc  { font-size:0.82rem; color:rgba(255,255,255,0.58); max-width:400px; margin-bottom:7px; line-height:1.6; font-family:'Inter',sans-serif; }
-  .fc-example {
-    font-size:0.82rem; color:rgba(255,255,255,0.38); font-style:italic; max-width:420px;
-    line-height:1.6; font-family:'Inter',sans-serif;
-  }
-  .fc-example-toggle {
-    font-size:0.68rem; color:rgba(0,245,255,0.45); font-style:normal; font-family:'Space Mono',monospace;
-    cursor:pointer; margin-top:2px; letter-spacing:0.05em; display:inline-block;
-  }
-  .fc-example-toggle:hover { color:var(--neon-cyan); }
+  .fc-example { font-size:0.82rem; color:rgba(255,255,255,0.38); font-style:italic; max-width:420px; line-height:1.6; font-family:'Inter',sans-serif; }
 
 
   .feedback-correct { color:var(--neon-green); text-shadow:0 0 8px rgba(57,255,20,0.5); }
@@ -856,206 +834,6 @@ const IDB = (() => {
   .pack-progress-bar { height:3px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden; margin-bottom:5px; }
   .pack-progress-fill { height:100%; background:linear-gradient(90deg,var(--neon-cyan),var(--neon-green)); border-radius:3px; }
   .pack-progress-label { font-size:0.65rem; color:rgba(255,255,255,0.3); }
-
-  /* ── MOBILE: 2-column mini card ── */
-  @media (max-width: 600px) {
-    .packs-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-    .pack-card {
-      padding: 11px 11px 10px;
-      border-radius: 14px;
-      min-height: unset;
-    }
-    .pack-card:hover { transform: none; }
-    .pack-icon {
-      font-size: 1.3rem !important;
-      margin-bottom: 6px !important;
-      display: block;
-    }
-    .pack-card.pinned .pack-icon { transform: scale(1.05); }
-    .pack-name {
-      font-size: 0.78rem !important;
-      margin-bottom: 3px !important;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.3;
-    }
-    .pack-meta {
-      font-size: 0.62rem !important;
-      margin-bottom: 7px !important;
-      line-height: 1.4;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .pack-progress-bar { margin-bottom: 0; }
-    .pack-progress-label { display: none; }
-    /* Ẩn sort wrap + publish btn trong card mobile */
-    .pack-sort-wrap,
-    .btn-publish { display: none !important; }
-    /* Actions chỉ hiện khi long-press (tap) qua CSS active */
-    .pack-actions {
-      position: absolute;
-      top: 6px; right: 6px;
-      opacity: 0;
-      gap: 3px;
-    }
-    .pack-card:active .pack-actions { opacity: 1; }
-    .pack-action-btn { width: 22px; height: 22px; font-size: 0.65rem; }
-    /* order num nhỏ hơn */
-    .pack-order-num { font-size: 0.5rem; top: 6px; left: 8px; }
-    /* Add card compact */
-    .pack-add-card {
-      min-height: 80px !important;
-      padding: 10px 8px !important;
-      border-radius: 14px !important;
-      gap: 5px !important;
-    }
-    .pack-add-icon { font-size: 1.4rem !important; }
-    .pack-add-label { font-size: 0.6rem !important; text-align: center; }
-    /* Shared pack card cũng mini */
-    .shared-pack-card { border-radius: 14px !important; }
-    /* Section label full width */
-    .shared-section-label { grid-column: 1 / -1 !important; }
-  }
-
-  /* ── MOBILE BOTTOM SHEET (admin pack options) ── */
-  .mob-sheet-overlay {
-    display: none;
-    position: fixed; inset: 0; z-index: 1000;
-    background: rgba(0,0,0,0.55);
-    align-items: flex-end;
-  }
-  .mob-sheet-overlay.open { display: flex; }
-  .mob-sheet {
-    width: 100%;
-    background: #131325;
-    border-radius: 20px 20px 0 0;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    padding: 0 0 env(safe-area-inset-bottom,16px);
-  }
-  .mob-sheet-handle {
-    width: 36px; height: 4px; border-radius: 2px;
-    background: rgba(255,255,255,0.15);
-    margin: 10px auto 4px;
-  }
-  .mob-sheet-title {
-    font-family:'Syne',sans-serif; font-size:0.82rem; font-weight:700;
-    color:#fff; padding: 8px 18px 12px; border-bottom: 1px solid rgba(255,255,255,0.07);
-  }
-  .mob-sheet-body { padding: 14px 18px 18px; display:flex; flex-direction:column; gap:12px; }
-  .mob-sheet-row { display:flex; align-items:center; justify-content:space-between; gap:10px; }
-  .mob-sheet-label { font-size:0.75rem; color:rgba(255,255,255,0.45); font-family:'Space Mono',monospace; }
-  .mob-sheet-sort-row { display:flex; align-items:center; gap:8px; }
-  .mob-sheet-sort-input {
-    width:60px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15);
-    border-radius:8px; color:#fff; font-family:'Space Mono',monospace; font-size:0.85rem;
-    text-align:center; padding:6px 8px; outline:none;
-  }
-  .mob-sheet-sort-input:focus { border-color:rgba(0,245,255,0.5); }
-  .mob-sheet-save-btn {
-    flex:1; background:rgba(0,245,255,0.1); border:1px solid rgba(0,245,255,0.25);
-    border-radius:8px; color:var(--neon-cyan); font-family:'Space Mono',monospace;
-    font-size:0.75rem; padding:7px 12px; cursor:pointer; transition:all 0.15s;
-  }
-  .mob-sheet-save-btn:hover { background:rgba(0,245,255,0.2); }
-  .mob-sheet-save-btn.saved { border-color:rgba(57,255,20,0.5); color:var(--neon-green); }
-
-  /* ── ARTICLE DRAWER ── */
-  .art-drawer-overlay {
-    display:none; position:fixed; inset:0; z-index:1100;
-    background:rgba(0,0,0,0.6); backdrop-filter:blur(2px);
-    align-items:flex-end;
-  }
-  .art-drawer-overlay.open { display:flex; }
-  .art-drawer {
-    width:100%; max-height:82vh;
-    background:#10102a; border-radius:22px 22px 0 0;
-    border-top:1px solid rgba(0,245,255,0.15);
-    display:flex; flex-direction:column;
-    box-shadow:0 -8px 40px rgba(0,0,0,0.5);
-  }
-  .art-drawer-header {
-    padding:14px 18px 12px; border-bottom:1px solid rgba(255,255,255,0.06);
-    display:flex; align-items:center; gap:10px; flex-shrink:0;
-  }
-  .art-drawer-handle {
-    width:36px; height:4px; border-radius:2px; background:rgba(255,255,255,0.15);
-    position:absolute; top:10px; left:50%; transform:translateX(-50%);
-  }
-  .art-drawer-title {
-    font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:700; color:#fff; flex:1;
-  }
-  .art-drawer-word {
-    font-family:'Space Mono',monospace; font-size:0.72rem;
-    color:var(--neon-cyan); background:rgba(0,245,255,0.08);
-    border:1px solid rgba(0,245,255,0.2); border-radius:20px; padding:3px 10px;
-  }
-  .art-drawer-close {
-    width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.06);
-    border:none; color:rgba(255,255,255,0.4); cursor:pointer; font-size:1rem;
-    display:flex; align-items:center; justify-content:center; transition:all 0.15s;
-  }
-  .art-drawer-close:hover { background:rgba(255,0,110,0.15); color:var(--neon-pink); }
-  .art-drawer-body {
-    overflow-y:auto; padding:12px 0 env(safe-area-inset-bottom,20px); flex:1;
-  }
-  .art-drawer-body::-webkit-scrollbar { width:3px; }
-  .art-drawer-body::-webkit-scrollbar-thumb { background:rgba(0,245,255,0.2); border-radius:3px; }
-  /* Accordion item */
-  .art-item { border-bottom:1px solid rgba(255,255,255,0.05); }
-  .art-item-head {
-    display:flex; align-items:center; gap:10px; padding:12px 18px;
-    cursor:pointer; transition:background 0.15s; user-select:none;
-  }
-  .art-item-head:hover { background:rgba(255,255,255,0.02); }
-  .art-item-arrow { font-size:0.6rem; color:rgba(255,255,255,0.25); transition:transform 0.2s; flex-shrink:0; }
-  .art-item.open .art-item-arrow { transform:rotate(90deg); color:var(--neon-cyan); }
-  .art-item-source { font-family:'Space Mono',monospace; font-size:0.72rem; font-weight:700; color:var(--neon-cyan); }
-  .art-item-date { font-size:0.65rem; color:rgba(255,255,255,0.25); margin-left:auto; font-family:'Space Mono',monospace; }
-  .art-item-body {
-    display:none; padding:0 18px 16px; animation:artFadeIn 0.2s ease;
-  }
-  .art-item.open .art-item-body { display:block; }
-  @keyframes artFadeIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:none} }
-  /* Sections inside body */
-  .art-section { margin-bottom:12px; }
-  .art-section-label {
-    font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase;
-    color:rgba(255,255,255,0.25); font-family:'Space Mono',monospace; margin-bottom:5px;
-  }
-  .art-quote {
-    font-size:0.82rem; font-style:italic; color:rgba(255,255,255,0.5);
-    line-height:1.7; padding-left:10px; border-left:2px solid rgba(0,245,255,0.3);
-  }
-  .art-quote mark {
-    background:none; font-style:normal; font-weight:700;
-    color:var(--neon-cyan); border-bottom:1px solid rgba(0,245,255,0.4);
-  }
-  .art-ctx { font-size:0.82rem; color:rgba(255,255,255,0.65); line-height:1.75; }
-  .art-quote-vi { font-size:0.8rem; color:rgba(255,255,255,0.4); line-height:1.7; font-style:italic; }
-  .art-link {
-    display:inline-flex; align-items:center; gap:5px; margin-top:8px;
-    font-size:0.68rem; font-family:'Space Mono',monospace; color:rgba(0,245,255,0.45);
-    text-decoration:none; transition:color 0.15s;
-  }
-  .art-link:hover { color:var(--neon-cyan); }
-  /* Nút mở drawer */
-  .btn-articles {
-    display:inline-flex; align-items:center; gap:6px;
-    padding:5px 13px; border-radius:20px; font-size:0.68rem;
-    font-family:'Space Mono',monospace; cursor:pointer; transition:all 0.18s;
-    background:rgba(0,245,255,0.06); border:1px solid rgba(0,245,255,0.18);
-    color:rgba(0,245,255,0.55); white-space:nowrap;
-  }
-  .btn-articles:hover { background:rgba(0,245,255,0.14); color:var(--neon-cyan); border-color:rgba(0,245,255,0.4); }
-  .btn-articles .art-count {
-    background:rgba(0,245,255,0.15); border-radius:10px;
-    padding:1px 6px; font-size:0.62rem; color:var(--neon-cyan);
-  }
   /* ── Sort order input (admin) ── */
   .pack-sort-wrap {
     display:flex; align-items:center; gap:6px; margin-top:10px;
@@ -1678,38 +1456,6 @@ const IDB = (() => {
     </div>
   </div>
 
-  <!-- MOBILE BOTTOM SHEET: admin pack options -->
-  <div class="mob-sheet-overlay" id="mobSheetOverlay" onclick="closeMobSheet(event)">
-    <div class="mob-sheet" id="mobSheet">
-      <div class="mob-sheet-handle"></div>
-      <div class="mob-sheet-title" id="mobSheetTitle">Tuỳ chọn</div>
-      <div class="mob-sheet-body">
-        <div class="mob-sheet-row">
-          <span class="mob-sheet-label">Số thứ tự (STT)</span>
-          <div class="mob-sheet-sort-row">
-            <input class="mob-sheet-sort-input" type="number" min="1" max="9999" id="mobSheetSortInput" placeholder="—">
-            <button class="mob-sheet-save-btn" id="mobSheetSaveBtn" onclick="mobSheetSaveSortOrder()">Lưu</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ARTICLE DRAWER -->
-  <div class="art-drawer-overlay" id="artDrawerOverlay" onclick="closeArtDrawer(event)">
-    <div class="art-drawer" id="artDrawer">
-      <div style="position:relative">
-        <div class="art-drawer-handle"></div>
-      </div>
-      <div class="art-drawer-header">
-        <div class="art-drawer-title">📰 Ngữ cảnh thực tế</div>
-        <div class="art-drawer-word" id="artDrawerWord"></div>
-        <button class="art-drawer-close" onclick="document.getElementById('artDrawerOverlay').classList.remove('open')">✕</button>
-      </div>
-      <div class="art-drawer-body" id="artDrawerBody"></div>
-    </div>
-  </div>
-
   <!-- ===== STUDY SCREEN ===== -->
   <div class="screen" id="screen-study">
 
@@ -1958,11 +1704,6 @@ async function saveData() {
     level: w.level || '',
     mastered: !!w.mastered,
     hidden: !!w.hidden,
-    art_source:   w.art_source   || '',
-    art_url:      w.art_url      || '',
-    art_ctx_vi:   w.art_ctx_vi   || '',
-    art_quote:    w.art_quote    || '',
-    art_quote_vi: w.art_quote_vi || '',
   }));
 
   await IDB.set(currentPack.id, { words: wordsToSave, updatedAt: now }).catch(() => {});
@@ -2144,11 +1885,6 @@ async function renderPacksGrid() {
             e.target.closest('.pin-toggle-wrap') || e.target.closest('.pack-sort-wrap')) return;
         openPack(pack);
       });
-      // Mobile: long-press mở bottom sheet pin/sort
-      let _pressTimer;
-      card.addEventListener('touchstart', () => { _pressTimer = setTimeout(() => openMobSheet(pack.id), 500); }, {passive:true});
-      card.addEventListener('touchend', () => clearTimeout(_pressTimer), {passive:true});
-      card.addEventListener('touchmove', () => clearTimeout(_pressTimer), {passive:true});
       grid.appendChild(card);
     });
 
@@ -2157,6 +1893,12 @@ async function renderPacksGrid() {
 
     loadAdminPacks().then(async adminPacks => {
       if (!adminPacks.length) return;
+      const label = document.createElement('div');
+      label.className = 'shared-section-label';
+      label.style.cssText = 'grid-column:1/-1';
+      label.innerHTML = '⬡ Giáo trình';
+      grid.insertBefore(label, grid.firstChild);
+
       for (let i = 0; i < adminPacks.length; i++) {
         const pack = adminPacks[i];
         let idbData = null;
@@ -2185,15 +1927,16 @@ async function renderPacksGrid() {
           <div class="pack-name">${h(pack.name)}</div>
           <div class="pack-meta">${pack.desc ? h(pack.desc) + '<br>' : ''}${total} từ · ${mastered} đã thuộc</div>
           <div class="pack-progress-bar"><div class="pack-progress-fill" style="width:${pct}%"></div></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px" onclick="event.stopPropagation()">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
             <div class="pack-progress-label" style="margin-top:0">${pct}% hoàn thành</div>
-            <div class="pin-toggle-wrap${isPinned ? ' active' : ''}" style="margin:0;padding:0;border:none">
-              <label class="pin-toggle">
-                <input type="checkbox" ${isPinned ? 'checked' : ''} onchange="toggleAdminPackPin('${pack.id}',this)">
-                <span class="pin-toggle-track"></span>
-              </label>
-              <span class="pin-toggle-label">Ghim</span>
-            </div>
+            <div class="pack-admin-badge">⬡ giáo trình</div>
+          </div>
+          <div class="pin-toggle-wrap${isPinned ? ' active' : ''}" onclick="event.stopPropagation()">
+            <label class="pin-toggle">
+              <input type="checkbox" ${isPinned ? 'checked' : ''} onchange="toggleAdminPackPin('${pack.id}',this)">
+              <span class="pin-toggle-track"></span>
+            </label>
+            <span class="pin-toggle-label">Ghim lên đầu</span>
           </div>
         `;
         card.addEventListener('click', (e) => {
@@ -2205,6 +1948,14 @@ async function renderPacksGrid() {
     }).catch(() => {});
 
     // Pack riêng của user
+    if (packs.length) {
+      const myLabel = document.createElement('div');
+      myLabel.className = 'shared-section-label';
+      myLabel.style.cssText = 'grid-column:1/-1;margin-top:8px';
+      myLabel.innerHTML = '◈ Gói của tôi';
+      grid.appendChild(myLabel);
+    }
+
     const addCard = document.createElement('div');
     addCard.className = 'pack-add-card';
     addCard.innerHTML = '<div class="pack-add-icon">⊕</div><div class="pack-add-label">TẠO GÓI MỚI</div>';
@@ -2229,15 +1980,13 @@ async function renderPacksGrid() {
         <div class="pack-name">${h(pack.name)}</div>
         <div class="pack-meta">${pack.desc ? h(pack.desc) + '<br>' : ''}${total} từ · ${mastered} đã thuộc</div>
         <div class="pack-progress-bar"><div class="pack-progress-fill" style="width:${pct}%"></div></div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px" onclick="event.stopPropagation()">
-          <div class="pack-progress-label">${pct}% hoàn thành</div>
-          <div class="pin-toggle-wrap${isPinned ? ' active' : ''}" style="margin:0;padding:0;border:none">
-            <label class="pin-toggle">
-              <input type="checkbox" ${isPinned ? 'checked' : ''} onchange="togglePin('${pack.id}',this)">
-              <span class="pin-toggle-track"></span>
-            </label>
-            <span class="pin-toggle-label">Ghim</span>
-          </div>
+        <div class="pack-progress-label">${pct}% hoàn thành</div>
+        <div class="pin-toggle-wrap${isPinned ? ' active' : ''}" onclick="event.stopPropagation()">
+          <label class="pin-toggle">
+            <input type="checkbox" ${isPinned ? 'checked' : ''} onchange="togglePin('${pack.id}',this)">
+            <span class="pin-toggle-track"></span>
+          </label>
+          <span class="pin-toggle-label">Ghim lên đầu</span>
         </div>
       `;
       card.addEventListener('click', (e) => {
@@ -2343,156 +2092,6 @@ async function toggleAdminPackPin(id, checkbox) {
   renderPacksGrid();
   showToast('success', isPinned ? '⭐ Đã ghim lên đầu' : '☆ Đã bỏ ghim');
 }
-// ── MOBILE BOTTOM SHEET (admin) ──
-let _mobSheetPackId = null;
-
-function openMobSheet(packId) {
-  if (window.innerWidth > 600) return; // chỉ mobile
-  const pack = packs.find(p => p.id === packId);
-  if (!pack) return;
-  _mobSheetPackId = packId;
-  document.getElementById('mobSheetTitle').textContent = pack.name;
-  document.getElementById('mobSheetPinCheck').checked = !!pack.pinned;
-  const orderVal = pack.sortOrder;
-  document.getElementById('mobSheetSortInput').value = (orderVal && orderVal !== 9999) ? orderVal : '';
-  document.getElementById('mobSheetSaveBtn').textContent = 'Lưu';
-  document.getElementById('mobSheetSaveBtn').classList.remove('saved');
-  document.getElementById('mobSheetOverlay').classList.add('open');
-}
-
-function closeMobSheet(e) {
-  if (e && e.target !== document.getElementById('mobSheetOverlay')) return;
-  document.getElementById('mobSheetOverlay').classList.remove('open');
-  _mobSheetPackId = null;
-}
-
-// ── ARTICLE DRAWER ──
-function parseArticles(word) {
-  // Tách nhiều bài báo bằng dấu |
-  const split = s => (s || '').split('|').map(x => x.trim()).filter(Boolean);
-  const sources  = split(word.art_source);
-  const urls     = split(word.art_url);
-  const ctxs     = split(word.art_ctx_vi);
-  const quotes   = split(word.art_quote);
-  const quotesVi = split(word.art_quote_vi);
-  if (!sources.length) return [];
-  return sources.map((src, i) => ({
-    source:   src,
-    url:      urls[i]     || '',
-    ctx_vi:   ctxs[i]     || '',
-    quote:    quotes[i]   || '',
-    quote_vi: quotesVi[i] || '',
-  }));
-}
-
-function openArtDrawer(word) {
-  const articles = parseArticles(word);
-  document.getElementById('artDrawerWord').textContent = word.word;
-  const body = document.getElementById('artDrawerBody');
-  if (!articles.length) {
-    body.innerHTML = `
-      <div style="padding:36px 24px;text-align:center">
-        <div style="font-size:2.2rem;margin-bottom:12px">📰</div>
-        <div style="font-size:0.82rem;color:rgba(255,255,255,0.35);line-height:1.8">
-          Từ này chưa có ngữ cảnh báo chí.<br>
-          <span style="font-size:0.72rem;color:rgba(255,255,255,0.2)">
-            Thêm vào Excel các cột:<br>
-            <code style="color:var(--neon-cyan);font-size:0.68rem">Nguồn báo · Trích dẫn gốc · Ngữ cảnh VI · Dịch câu</code>
-          </span>
-        </div>
-      </div>`;
-    document.getElementById('artDrawerOverlay').classList.add('open');
-    return;
-  }
-  body.innerHTML = articles.map((a, i) => `
-    <div class="art-item" id="artItem${i}">
-      <div class="art-item-head" onclick="toggleArtItem(${i})">
-        <span class="art-item-arrow">▶</span>
-        <span class="art-item-source">${h(a.source)}</span>
-        <span class="art-item-date"></span>
-      </div>
-      <div class="art-item-body">
-        ${a.ctx_vi ? `
-          <div class="art-section">
-            <div class="art-section-label">Ngữ cảnh (tiếng Việt)</div>
-            <div class="art-ctx">${h(a.ctx_vi)}</div>
-          </div>` : ''}
-        ${a.quote ? `
-          <div class="art-section">
-            <div class="art-section-label">Trích dẫn gốc</div>
-            <div class="art-quote">${highlightArtWord(h(a.quote), word.word)}</div>
-          </div>` : ''}
-        ${a.quote_vi ? `
-          <div class="art-section">
-            <div class="art-section-label">Dịch câu sang tiếng Việt</div>
-            <div class="art-quote-vi">${h(a.quote_vi)}</div>
-          </div>` : ''}
-        ${a.url ? `<a class="art-link" href="${h(a.url)}" target="_blank">↗ Đọc bài gốc</a>` : ''}
-      </div>
-    </div>
-  `).join('');
-  toggleArtItem(0);
-  document.getElementById('artDrawerOverlay').classList.add('open');
-}
-
-function toggleArtItem(i) {
-  const item = document.getElementById('artItem' + i);
-  if (!item) return;
-  const wasOpen = item.classList.contains('open');
-  // Đóng tất cả
-  document.querySelectorAll('.art-item.open').forEach(el => el.classList.remove('open'));
-  if (!wasOpen) item.classList.add('open');
-}
-
-function closeArtDrawer(e) {
-  if (e && e.target !== document.getElementById('artDrawerOverlay')) return;
-  document.getElementById('artDrawerOverlay').classList.remove('open');
-}
-
-function highlightArtWord(text, word) {
-  if (!word) return text;
-  const re = new RegExp(`(${word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
-  return text.replace(re, '<mark>$1</mark>');
-}
-
-function artBtnHtml(word, extraStyle='') {
-  const arts = parseArticles(word);
-  if (!arts.length) return '';
-  return `<button class="btn-articles" style="${extraStyle}" onclick="openArtDrawer(words.find(w=>w.word==='${word.word.replace(/'/g,"\\'")}'));event.stopPropagation()">
-    📰 Báo chí <span class="art-count">${arts.length}</span>
-  </button>`;
-}
-
-async function mobSheetTogglePin() {
-  if (!_mobSheetPackId) return;
-  const checkbox = document.getElementById('mobSheetPinCheck');
-  const p = packs.find(p => p.id === _mobSheetPackId);
-  if (!p) return;
-  p.pinned = checkbox.checked;
-  await savePacks();
-  renderPacksGrid();
-  showToast('success', p.pinned ? '⭐ Đã ghim lên đầu' : '☆ Đã bỏ ghim');
-}
-
-async function mobSheetSaveSortOrder() {
-  if (!_mobSheetPackId) return;
-  const val = parseInt(document.getElementById('mobSheetSortInput').value);
-  if (isNaN(val) || val < 1) { showToast('error', '⚠ Nhập số từ 1 trở lên'); return; }
-  const pack = packs.find(p => p.id === _mobSheetPackId);
-  if (!pack) return;
-  pack.sortOrder = val;
-  await savePacks();
-  if (pack.published && navigator.onLine) {
-    window._setDoc(window._doc(window._db,'adminPacks',_mobSheetPackId),
-      { sortOrder: val, updatedAt: Date.now() }, { merge: true }
-    ).then(() => _bumpAppVersion()).catch(() => {});
-  }
-  const btn = document.getElementById('mobSheetSaveBtn');
-  btn.textContent = '✓ Đã lưu'; btn.classList.add('saved');
-  setTimeout(() => { btn.textContent = 'Lưu'; btn.classList.remove('saved'); }, 1500);
-  renderPacksGrid();
-}
-
 async function savePackSortOrder(packId, btn) {
   const input = document.getElementById('sort-input-' + packId);
   if (!input) return;
@@ -2504,6 +2103,7 @@ async function savePackSortOrder(packId, btn) {
   pack.sortOrder = val;
   await savePacks();
 
+  // Nếu pack đã publish → cập nhật sortOrder trên adminPacks để user thấy đúng thứ tự
   if (pack.published && navigator.onLine) {
     window._setDoc(
       window._doc(window._db, 'adminPacks', packId),
@@ -2512,6 +2112,7 @@ async function savePackSortOrder(packId, btn) {
     ).then(() => _bumpAppVersion()).catch(() => {});
   }
 
+  // Feedback nút
   btn.textContent = '✓ Đã lưu';
   btn.classList.add('saved');
   setTimeout(() => { btn.textContent = 'Lưu'; btn.classList.remove('saved'); }, 1800);
@@ -2579,17 +2180,11 @@ function processExcelFile(file) {
         word:        ['word'],
         meaning:     ['nghĩa tiếng việt','meaning','nghia tieng viet','nghĩa','ngha tieng vit'],
         phonetics:   ['phonetics','phonetic','phiên âm','phien am'],
-        description: ['description','descrition','mô tả','mo ta','desc','note'],
+        description: ['description','descrition','mô tả','mo ta','desc'],
         example:     ['example','ví dụ','vi du'],
         example_vi:  ['example vi','ví dụ vi','vi du vi','example_vi','ví dụ tiếng việt','vi du tieng viet'],
         type:        ['type','loại từ','loai tu'],
         level:       ['level','cấp độ','cap do'],
-        // Bài báo — nhiều bài dùng dấu | phân cách
-        art_source:  ['article_source','bai bao','bài báo','source','nguồn báo','nguon bao'],
-        art_url:     ['article_url','url','link'],
-        art_ctx_vi:  ['article_context_vi','ngu canh vi','ngữ cảnh vi','context_vi','ngữ cảnh vi'],
-        art_quote:   ['article_quote','trich dan','trích dẫn','quote','trích dẫn gốc'],
-        art_quote_vi:['article_quote_vi','dich cau','dịch câu','quote_vi','dịch câu'],
       };
 
       function getCol(row, aliases) {
@@ -2614,11 +2209,6 @@ function processExcelFile(file) {
           example_vi:  getCol(row, COL.example_vi),
           type:        getCol(row, COL.type),
           level:       getCol(row, COL.level),
-          art_source:  getCol(row, COL.art_source),
-          art_url:     getCol(row, COL.art_url),
-          art_ctx_vi:  getCol(row, COL.art_ctx_vi),
-          art_quote:   getCol(row, COL.art_quote),
-          art_quote_vi:getCol(row, COL.art_quote_vi),
           mastered:    false,
         });
       });
@@ -2841,15 +2431,6 @@ function renderFlashcard() {
     return;
   }
   const c = studyQueue[currentIndex];
-  // Merge art_* từ words gốc vào c (phòng khi IDB cache cũ chưa có field này)
-  const _wSrc = words.find(w => w.word === c.word);
-  if (_wSrc) {
-    c.art_source   = c.art_source   || _wSrc.art_source   || '';
-    c.art_url      = c.art_url      || _wSrc.art_url      || '';
-    c.art_ctx_vi   = c.art_ctx_vi   || _wSrc.art_ctx_vi   || '';
-    c.art_quote    = c.art_quote    || _wSrc.art_quote     || '';
-    c.art_quote_vi = c.art_quote_vi || _wSrc.art_quote_vi || '';
-  }
   const m = words.filter(w=>w.mastered && !w.hidden).length;
   const total = words.filter(w=>!w.hidden).length;
   const prog = total ? Math.round((m/total)*100) : 0;
@@ -2893,6 +2474,7 @@ function renderFlashcard() {
           <div class="fc-hint">${reversedMode ? 'Tiếng Việt – Nhấp để xem tiếng Anh ↕' : 'Nhấp để xem nghĩa ↕'}</div>
           ${reversedMode ? `
             <div class="fc-word">${h(c.meaning)}</div>
+            ${c.description?`<div class="fc-desc">${h(c.description)}</div>`:''}
           ` : `
             <div class="fc-word">${h(c.word)}</div>
             ${c.phonetics?`<div class="fc-phonetic">/${h(c.phonetics)}/</div>`:''}
@@ -2904,10 +2486,7 @@ function renderFlashcard() {
               <a class="fc-cambridge-link" href="https://dictionary.cambridge.org/dictionary/english/${encodeURIComponent(c.word)}" target="_blank" onclick="event.stopPropagation()">📖 Cambridge</a>
             </div>
           `}
-          ${c.example ? `
-            <div class="fc-example" id="fcExFront" style="margin-top:6px" onclick="event.stopPropagation()">🗣 ${h(c.example)}</div>
-          ` : ''}
-          <span class="fc-example-toggle" onclick="openArtDrawer(studyQueue[currentIndex]);event.stopPropagation()">📰 xem ngữ cảnh báo chí →</span>
+          ${c.example?`<div class="fc-example" style="margin-top:6px" onclick="event.stopPropagation()">🗣 ${h(c.example)}</div>`:''}
         </div>
         <div class="fc-face fc-back">
           <div class="fc-hint">${reversedMode ? 'Tiếng Anh' : 'Nghĩa tiếng Việt'}</div>
@@ -2923,28 +2502,18 @@ function renderFlashcard() {
             </div>
           ` : `
             <div class="fc-word">${h(c.meaning)}</div>
+            ${c.description?`<div class="fc-desc">${h(c.description)}</div>`:''}
             <div style="margin-top:8px;font-size:0.8rem;color:rgba(255,255,255,0.38)">${h(c.word)}${c.phonetics?` &nbsp;<span style="color:var(--neon-cyan)">/${h(c.phonetics)}/</span>`:''}</div>
             <div class="fc-speak-row" onclick="event.stopPropagation()">
               <button class="fc-speak-btn fc-speak-us" id="btnUS2" onclick="speakWord('${c.word.replace(/'/g,"\\'")}','en-US','btnUS2')">🔊 US</button>
               <button class="fc-speak-btn fc-speak-uk" id="btnUK2" onclick="speakWord('${c.word.replace(/'/g,"\\'")}','en-GB','btnUK2')">🔊 UK</button>
             </div>
           `}
-          ${(() => {
-            const ex = reversedMode ? c.example : (c.example_vi || c.example);
-            return `
-              ${ex ? `<div class="fc-example" id="fcExBack" style="margin-top:6px" onclick="event.stopPropagation()">🗣 ${h(ex)}</div>` : ''}
-              <span class="fc-example-toggle" onclick="openArtDrawer(studyQueue[currentIndex]);event.stopPropagation()">📰 xem ngữ cảnh báo chí →</span>
-            `;
-          })()}
-        </div>
-        <!-- Sizer: đẩy chiều cao card theo mặt đang hiển thị -->
-        <div class="fc-sizer" id="fcSizer" aria-hidden="true">
-          <div class="fc-hint" style="opacity:0">hint</div>
-          ${reversedMode ? `<div class="fc-word">${h(c.meaning)}</div>` : `<div class="fc-word">${h(c.word)}</div>`}
-          ${c.phonetics?`<div class="fc-phonetic" style="opacity:0">ph</div>`:''}
-          ${c.level?`<div class="fc-level" style="opacity:0">lv</div>`:''}
-          <div class="fc-speak-row" style="opacity:0"><button class="fc-speak-btn fc-speak-us">🔊 US</button></div>
-          ${c.example ? `<div class="fc-example" style="opacity:0;display:block">🗣 ${h(c.example)}</div>` : ''}
+          ${reversedMode
+            ? (c.example    ? `<div class="fc-example" style="margin-top:6px" onclick="event.stopPropagation()">🗣 ${h(c.example)}</div>` : '')
+            : (c.example_vi ? `<div class="fc-example" style="margin-top:6px" onclick="event.stopPropagation()">🗣 ${h(c.example_vi)}</div>`
+               : c.example  ? `<div class="fc-example" style="margin-top:6px" onclick="event.stopPropagation()">🗣 ${h(c.example)}</div>` : '')
+          }
         </div>
       </div>
     </div>
@@ -2964,29 +2533,12 @@ function renderFlashcard() {
   autoSpeakCurrent();
 }
 
-// Toggle example expand/collapse trên flashcard
-function toggleFcExample(exId, togId) {
-  const ex = document.getElementById(exId);
-  const tog = document.getElementById(togId);
-  if (!ex) return;
-  const expanded = ex.classList.toggle('expanded');
-  if (tog) tog.textContent = expanded ? '▲ thu gọn' : '▼ xem đầy đủ';
-  // Cập nhật sizer để card giãn chiều cao
-  const sizer = document.getElementById('fcSizer');
-  if (sizer) {
-    const sizerEx = sizer.querySelector('.fc-example');
-    if (sizerEx) {
-      sizerEx.style.display = expanded ? 'block' : '';
-      sizerEx.style['-webkit-line-clamp'] = expanded ? 'unset' : '';
-    }
-  }
-}
-
 function flipCard() {
   const c=document.getElementById('theCard'); if(!c)return;
   const wasFlipped = isFlipped;
   isFlipped=!isFlipped;
   c.classList.toggle('flipped',isFlipped);
+  // Only count as "seen" when flipping to reveal the back for the first time per card
   if (!wasFlipped) { statsRecordFlip(); }
 }
 
